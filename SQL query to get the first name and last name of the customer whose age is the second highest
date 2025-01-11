@@ -1,0 +1,36 @@
+Q. SQL query to get the first name and last name of the customer whose age is the second highest in the Table.
+
+Ans:
+
+SELECT first_name, last_name 
+FROM customer
+WHERE age = (
+    SELECT MAX(age)
+    FROM customer
+    WHERE age < (SELECT MAX(age) FROM customer)
+);
+
+
+
+Explanation:
+1. Inner Query 1 (SELECT MAX(age) FROM customer): Retrieves the highest age.  
+2. Inner Query 2 (SELECT MAX(age) FROM customer WHERE age < (subquery)): Finds the second-highest age by filtering out the highest age.  
+3. Outer Query: Select the first_name and last_name of customers whose age matches the second-highest age.  
+
+
+Example:
+Table: customer
+
+| first_name | last_name | age |
+|------------|-----------|-----|
+| John       | Doe       | 35  |
+| Alice      | Smith     | 28  |
+| Bob        | Johnson   | 30  |
+
+
+Result:
+
+| first_name | last_name |
+|------------|-----------|
+| Bob        | Johnson   |
+
