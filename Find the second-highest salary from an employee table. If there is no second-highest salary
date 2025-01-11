@@ -1,0 +1,31 @@
+SQL query to find the second-highest salary from an employee table. If there is no second-highest salary it will return NULL:  
+
+Ans:
+
+SELECT MAX(salary) AS second_highest_salary
+FROM employee
+WHERE salary < (SELECT MAX(salary) FROM employee);
+
+
+Explanation:
+1. The subquery (SELECT MAX(salary) FROM employee) gets the highest salary.
+2. The WHERE salary < (subquery) filters out the highest salary.
+3. The outer query calculates the maximum salary from the remaining salaries, which is the second-highest.
+
+Handle Case When No Second-Highest Salary:
+If all employees have the same salary or there is only one employee, the query will return `NULL`.
+
+
+Alternative Query Using DISTINCT:
+If there are duplicate salaries:
+
+SELECT DISTINCT salary AS second_highest_salary
+FROM employee
+ORDER BY salary DESC
+LIMIT 1 OFFSET 1;
+
+
+Explanation:
+1. DISTINCT ensures unique salaries.
+2. ORDER BY salary DESC sorts salaries in descending order.
+3. LIMIT 1 OFFSET 1 skips the highest salary and fetches the second-highest.
